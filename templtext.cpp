@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2169 $ $Date:: 2015-07-20 #$ $Author: serge $
+// $Revision: 2176 $ $Date:: 2015-07-21 #$ $Author: serge $
 
 #include "templtext.h"                  // self
 
@@ -59,9 +59,11 @@ void TemplText::iterate_and_extract( const std::string & parent_name, const boos
         const std::string & name    = it->first;
         const std::string & str     = it->second.data();
 
-        VectStr res;
+        SetStr res_set;
 
-        extract_placeholders( res, str );
+        extract_placeholders( res_set, str );
+
+        VectStr res( res_set.begin(), res_set.end() );
 
         placeholders_.insert( MapStrToVectStr::value_type( parent_name + "." + name, res ) );
     }
@@ -78,7 +80,7 @@ void TemplText::extract_all_placeholders()
     }
 }
 
-void TemplText::extract_placeholders( VectStr & res, const std::string & str )
+void TemplText::extract_placeholders( SetStr & res, const std::string & str )
 {
     try
     {
@@ -88,12 +90,50 @@ void TemplText::extract_placeholders( VectStr & res, const std::string & str )
         for( ; it != end; ++it )
         {
             boost::smatch match = *it;
-            std::cout << match.str() << "\n";
-            res.push_back( match.str() );
+            //std::cout << match.str() << "\n"; // DEBUG
+
+            std::string name = extract_name( match.str() );
+
+            if( res.count( name ) == 0 )
+                res.insert( name );
         }
     } catch( boost::regex_error& e )
     {
         // Syntax error in the regular expression
+        throw std::invalid_argument( e.what() );
+    }
+}
+
+std::string TemplText::extract_name( const std::string & str )
+{
+    boost::regex re( "%\\{([A-Z0-9]+)\\}$|%([A-Z0-9]+)$" );
+
+    boost::smatch matches;
+
+    try
+    {
+        if( boost::regex_match( str, matches, re ) )
+        {
+            auto size = matches.size();
+            for( unsigned i = 1; i < size; ++i )
+            {
+                std::string res( matches[i].first, matches[i].second );
+                //std::cout << "matches [" << i << "] = " << res << std::endl;  // DEBUG
+
+                if( res.empty() == false )
+                    return res;
+            }
+
+            return std::string();
+        }
+        else
+        {
+            //std::cout << "'" << re << "' does not match '" << str << "'. matches size(" << matches.size() << ")" << std::endl; // DEBUG
+            return std::string();
+        }
+    }
+    catch( boost::regex_error& e )
+    {
         throw std::invalid_argument( e.what() );
     }
 }

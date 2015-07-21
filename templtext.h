@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2171 $ $Date:: 2015-07-20 #$ $Author: serge $
+// $Revision: 2174 $ $Date:: 2015-07-21 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_H
 #define LIB_TEMPLTEXT_H
@@ -27,6 +27,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <string>                   // std::string
 #include <vector>                   // std::vector
 #include <map>                      // std::map
+#include <set>                      // std::set
 
 #include <boost/property_tree/ptree.hpp>    // boost::property_tree::ptree
 
@@ -48,6 +49,7 @@ public:
     const std::vector<std::string> & get_placeholders( const std::string & name ) const;
 
 private:
+    typedef std::set<std::string>           SetStr;
     typedef std::vector<std::string>        VectStr;
     typedef std::map<std::string, VectStr>  MapStrToVectStr;
 
@@ -56,8 +58,8 @@ private:
     void iterate_and_extract( const std::string & parent_name, const boost::property_tree::ptree & pt );
 
     void extract_all_placeholders();
-    static void extract_placeholders( VectStr & res, const std::string & str );
-    static void extract_name( const std::string & str );
+    static void extract_placeholders( SetStr & res, const std::string & str );
+    static std::string extract_name( const std::string & str );
 
 private:
     boost::property_tree::ptree pt_;

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2163 $ $Date:: 2015-07-17 #$ $Author: serge $
+// $Revision: 2169 $ $Date:: 2015-07-20 #$ $Author: serge $
 
 #include "templtext.h"                  // self
 
@@ -51,9 +51,10 @@ bool TemplText::init(
     return true;
 }
 
-void TemplText::extract_all_placeholders()
+void TemplText::iterate_and_extract( const std::string & parent_name, const boost::property_tree::ptree & pt )
 {
-    for( auto it = pt_.begin(); it != pt_.end(); ++it )
+    auto it_end = pt.end();
+    for( auto it = pt.begin(); it != it_end; ++it )
     {
         const std::string & name    = it->first;
         const std::string & str     = it->second.data();
@@ -62,7 +63,18 @@ void TemplText::extract_all_placeholders()
 
         extract_placeholders( res, str );
 
-        placeholders_.insert( MapStrToVectStr::value_type( name, res ) );
+        placeholders_.insert( MapStrToVectStr::value_type( parent_name + "." + name, res ) );
+    }
+}
+
+void TemplText::extract_all_placeholders()
+{
+    auto it_end = pt_.end();
+    for( auto it = pt_.begin(); it != it_end; ++it )
+    {
+        const std::string & name    = it->first;
+
+        iterate_and_extract( name, it->second );
     }
 }
 

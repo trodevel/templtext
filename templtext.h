@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2163 $ $Date:: 2015-07-17 #$ $Author: serge $
+// $Revision: 2171 $ $Date:: 2015-07-20 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_H
 #define LIB_TEMPLTEXT_H
@@ -53,8 +53,11 @@ private:
 
 private:
 
+    void iterate_and_extract( const std::string & parent_name, const boost::property_tree::ptree & pt );
+
     void extract_all_placeholders();
-    void extract_placeholders( VectStr & res, const std::string & str );
+    static void extract_placeholders( VectStr & res, const std::string & str );
+    static void extract_name( const std::string & str );
 
 private:
     boost::property_tree::ptree pt_;

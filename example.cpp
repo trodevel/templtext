@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2168 $ $Date:: 2015-07-17 #$ $Author: serge $
+// $Revision: 2170 $ $Date:: 2015-07-20 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -41,6 +41,9 @@ std::string show_placeholders( const std::vector<std::string> & ph )
 
     os << ph.size() << ": ";
 
+    for( auto & s : ph )
+        os << s << " ";
+
     return os.str();
 }
 
@@ -50,7 +53,7 @@ int main()
 
     t.init( "templates.ini" );
 
-    for( int i = 1; i < 5; ++i )
+    for( int i = 1; i <= 5; ++i )
     {
         std::string key_1 = create_key( "Text", i, "en" );
         std::string key_2 = create_key( "Text", i, "de" );

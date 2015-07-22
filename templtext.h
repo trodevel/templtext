@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2174 $ $Date:: 2015-07-21 #$ $Author: serge $
+// $Revision: 2185 $ $Date:: 2015-07-22 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_H
 #define LIB_TEMPLTEXT_H
@@ -38,33 +38,52 @@ NAMESPACE_TEMPLTEXT_START
 class TemplText
 {
 public:
+    typedef std::map<std::string, std::string>  MapKeyValue;
+    typedef std::set<std::string>               SetStr;
+
+    class Templ
+    {
+    public:
+        Templ( const std::string & name, const std::string & templ, const SetStr & placeholders );
+
+        const std::string & get_name() const;
+        const std::string & get_template() const;
+        const SetStr & get_placeholders() const;
+        bool validate_tokens( const MapKeyValue & tokens, std::string & missing_token ) const;
+
+        std::string format( const MapKeyValue & tokens, bool throw_on_error = true ) const;
+
+    private:
+        std::string     name_;
+        std::string     templ_;
+        SetStr          placeholders_;
+    };
+
+public:
 
     TemplText();
 
     bool init(
             const std::string & config_file );
 
-    std::string get_template( const std::string & name );
+    bool has_template( const std::string & name ) const;
 
-    const std::vector<std::string> & get_placeholders( const std::string & name ) const;
+    const Templ & get_template( const std::string & name ) const;
 
 private:
-    typedef std::set<std::string>           SetStr;
-    typedef std::vector<std::string>        VectStr;
-    typedef std::map<std::string, VectStr>  MapStrToVectStr;
+    typedef std::map<std::string, Templ>  MapStrToTempl;
 
 private:
 
     void iterate_and_extract( const std::string & parent_name, const boost::property_tree::ptree & pt );
 
-    void extract_all_placeholders();
+    void extract_templates( const boost::property_tree::ptree & pt );
     static void extract_placeholders( SetStr & res, const std::string & str );
     static std::string extract_name( const std::string & str );
 
 private:
-    boost::property_tree::ptree pt_;
 
-    MapStrToVectStr             placeholders_;
+    MapStrToTempl   templs_;
 };
 
 NAMESPACE_TEMPLTEXT_END

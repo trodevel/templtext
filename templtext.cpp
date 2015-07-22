@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2176 $ $Date:: 2015-07-21 #$ $Author: serge $
+// $Revision: 2185 $ $Date:: 2015-07-22 #$ $Author: serge $
 
 #include "templtext.h"                  // self
 
@@ -30,9 +30,72 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 // for config reading
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/regex.hpp>              // boost::regex - for GCC older than 4.9.0
+#include <boost/algorithm/string.hpp>   // boost::replace_all
 
 
 NAMESPACE_TEMPLTEXT_START
+
+TemplText::Templ::Templ( const std::string & name, const std::string & templ, const SetStr & placeholders ):
+    name_( name ),
+    templ_( templ ),
+    placeholders_( placeholders )
+{
+}
+
+const std::string & TemplText::Templ::get_name() const
+{
+    return name_;
+}
+
+const std::string & TemplText::Templ::get_template() const
+{
+    return templ_;
+}
+
+const TemplText::SetStr & TemplText::Templ::get_placeholders() const
+{
+    return placeholders_;
+}
+
+bool TemplText::Templ::validate_tokens( const MapKeyValue & tokens, std::string & missing_token ) const
+{
+    for( auto & k : placeholders_ )
+    {
+        if( tokens.count( k ) == 0 )
+        {
+            missing_token = k;
+            return false;
+        }
+    }
+
+    return true;
+}
+
+std::string TemplText::Templ::format( const MapKeyValue & tokens, bool throw_on_error ) const
+{
+    std::string res( templ_ );
+
+    for( auto & key : placeholders_ )
+    {
+        auto it = tokens.find( key );
+
+        if( it == tokens.end() )
+        {
+            if( throw_on_error )
+                throw std::invalid_argument( ( "cannot find token '" + key + "' required for template '" + name_ + "'" ).c_str() );
+            else
+                continue;
+        }
+
+        auto & val = it->second;
+
+        boost::replace_all( res, "%" + key, val );
+        boost::replace_all( res, "%{" + key + "}", val );
+    }
+
+    return res;
+}
+
 
 TemplText::TemplText()
 {
@@ -44,9 +107,11 @@ bool TemplText::init(
     if( config_file.empty() )
         return false;
 
-    boost::property_tree::ini_parser::read_ini( config_file, pt_ );
+    boost::property_tree::ptree pt;
 
-    extract_all_placeholders();
+    boost::property_tree::ini_parser::read_ini( config_file, pt );
+
+    extract_templates( pt );
 
     return true;
 }
@@ -59,20 +124,22 @@ void TemplText::iterate_and_extract( const std::string & parent_name, const boos
         const std::string & name    = it->first;
         const std::string & str     = it->second.data();
 
-        SetStr res_set;
+        SetStr ph;
 
-        extract_placeholders( res_set, str );
+        extract_placeholders( ph, str );
 
-        VectStr res( res_set.begin(), res_set.end() );
+        std::string templ_name = parent_name + "." + name;
 
-        placeholders_.insert( MapStrToVectStr::value_type( parent_name + "." + name, res ) );
+        Templ t( templ_name, str, ph );
+
+        templs_.insert( MapStrToTempl::value_type( templ_name, t ) );
     }
 }
 
-void TemplText::extract_all_placeholders()
+void TemplText::extract_templates( const boost::property_tree::ptree & pt )
 {
-    auto it_end = pt_.end();
-    for( auto it = pt_.begin(); it != it_end; ++it )
+    auto it_end = pt.end();
+    for( auto it = pt.begin(); it != it_end; ++it )
     {
         const std::string & name    = it->first;
 
@@ -138,30 +205,19 @@ std::string TemplText::extract_name( const std::string & str )
     }
 }
 
-std::string TemplText::get_template( const std::string & name )
+bool TemplText::has_template( const std::string & name ) const
 {
-    static const std::string empty;
-
-    auto opt_value = pt_.get_optional<std::string>( name );
-
-    if( opt_value.is_initialized() == false )
-    {
-        return empty;
-    }
-
-    std::string res = opt_value.get();
-
-    return res;
+    return ( templs_.count( name ) > 0 );
 }
 
-const std::vector<std::string> & TemplText::get_placeholders( const std::string & name ) const
+const TemplText::Templ & TemplText::get_template( const std::string & name ) const
 {
-    static const std::vector<std::string> empty;
+    auto it = templs_.find( name );
 
-    auto it = placeholders_.find( name );
-
-    if( it == placeholders_.end() )
-        return empty;
+    if( it == templs_.end() )
+    {
+        throw std::invalid_argument( ( "cannot find template '" + name + "'" ).c_str() );
+    }
 
     return it->second;
 }

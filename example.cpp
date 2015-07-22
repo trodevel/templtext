@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2170 $ $Date:: 2015-07-20 #$ $Author: serge $
+// $Revision: 2183 $ $Date:: 2015-07-22 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -35,7 +35,7 @@ std::string create_key( const std::string & name, int num, const std::string & l
     return os.str();
 }
 
-std::string show_placeholders( const std::vector<std::string> & ph )
+std::string show_placeholders( const std::set<std::string> & ph )
 {
     std::stringstream os;
 
@@ -49,17 +49,26 @@ std::string show_placeholders( const std::vector<std::string> & ph )
 
 int main()
 {
-    templtext::TemplText t;
+    templtext::TemplText tt;
 
-    t.init( "templates.ini" );
+    tt.init( "templates.ini" );
 
     for( int i = 1; i <= 5; ++i )
     {
         std::string key_1 = create_key( "Text", i, "en" );
         std::string key_2 = create_key( "Text", i, "de" );
 
-        std::cout << "templ 0" << i << " - " << t.get_template( key_1 ) << " " << show_placeholders( t.get_placeholders( key_1 )) << std::endl;
-        std::cout << "templ 0" << i << " - " << t.get_template( key_2 ) << " " << show_placeholders( t.get_placeholders( key_2 )) << std::endl;
+        if( tt.has_template( key_1 ) )
+        {
+            const templtext::TemplText::Templ & t = tt.get_template( key_1 );
+            std::cout << "templ 0" << i << " - " << t.get_template() << " " << show_placeholders( t.get_placeholders() ) << std::endl;
+        }
+
+        if( tt.has_template( key_2 ) )
+        {
+            const templtext::TemplText::Templ & t = tt.get_template( key_1 );
+            std::cout << "templ 0" << i << " - " << t.get_template() << " " << show_placeholders( t.get_placeholders() ) << std::endl;
+        }
     }
 
     return 0;

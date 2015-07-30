@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2207 $ $Date:: 2015-07-29 #$ $Author: serge $
+// $Revision: 2212 $ $Date:: 2015-07-30 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -202,6 +202,9 @@ int main()
     templtext::extract_function("$foo( AB, CD )");
     templtext::extract_function("$foo( AB, CD, E )");
     templtext::extract_function("$foo( AB, CD, EF )");
+
+    templtext::find_function("some text $foo( A ) what do think?");
+    templtext::find_function("some text $bar( A ) with several functions $bar( B )?");
 
     return 0;
 }

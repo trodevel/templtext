@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2208 $ $Date:: 2015-07-29 #$ $Author: serge $
+// $Revision: 2211 $ $Date:: 2015-07-30 #$ $Author: serge $
 
 #include "templtext.h"                  // self
 
@@ -225,13 +225,51 @@ const TemplText::Templ & TemplText::get_template( const std::string & name ) con
     return it->second;
 }
 
+const std::string & get_regex_function_match()
+{
+    static const std::string res( "\\$([A-Za-z][A-Za-z_0-9]+)\\s*\\(\\s*([A-Z]+)*(\\s*(,)\\s*([A-Z]+)(\\s*(,)\\s*([A-Z]+))*)*\\s*\\)" );
+
+    return res;
+}
+// stackoverflow
+void index( boost::regex& re, const std::string& input )
+{
+    std::string::difference_type abs = 0;
+
+    boost::match_results<std::string::const_iterator> what;
+    boost::match_flag_type flags = boost::match_default;
+    std::string::const_iterator s = input.begin();
+    std::string::const_iterator e = input.end();
+    while( boost::regex_search( s, e, what, re, flags ) )
+    {
+        std::string::difference_type l = what.length();
+        std::string::difference_type p = what.position();
+
+        abs += p;
+
+        std::cout << "found at pos " << p << " len " << l << " '" << input.substr( abs, l ) << "'" << std::endl;
+
+        s += p + l;
+
+        abs += l;
+    }
+}
+
+bool find_function( const std::string & str )
+{
+    boost::regex re( get_regex_function_match() );
+
+    index( re, str );
+    return true;
+}
+
 std::string extract_function( const std::string & str )
 {
     std::cout << "input = " << str << std::endl;  // DEBUG
 
     std::ostringstream s;
 
-    boost::regex re( "\\$([A-Za-z][A-Za-z_0-9]+)\\s*\\(\\s*([A-Z]+)*(\\s*(,)\\s*([A-Z]+)(\\s*(,)\\s*([A-Z]+))*)*\\s*\\)" );
+    boost::regex re( get_regex_function_match() );
 
     boost::smatch matches;
 

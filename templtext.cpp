@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2185 $ $Date:: 2015-07-22 #$ $Author: serge $
+// $Revision: 2208 $ $Date:: 2015-07-29 #$ $Author: serge $
 
 #include "templtext.h"                  // self
 
@@ -31,6 +31,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/regex.hpp>              // boost::regex - for GCC older than 4.9.0
 #include <boost/algorithm/string.hpp>   // boost::replace_all
+
+// TEMP
+#include <sstream>                  // std::ostringstream
 
 
 NAMESPACE_TEMPLTEXT_START
@@ -220,6 +223,47 @@ const TemplText::Templ & TemplText::get_template( const std::string & name ) con
     }
 
     return it->second;
+}
+
+std::string extract_function( const std::string & str )
+{
+    std::cout << "input = " << str << std::endl;  // DEBUG
+
+    std::ostringstream s;
+
+    boost::regex re( "\\$([A-Za-z][A-Za-z_0-9]+)\\s*\\(\\s*([A-Z]+)*(\\s*(,)\\s*([A-Z]+)(\\s*(,)\\s*([A-Z]+))*)*\\s*\\)" );
+
+    boost::smatch matches;
+
+    try
+    {
+        if( boost::regex_match( str, matches, re ) )
+        {
+            auto size = matches.size();
+            for( unsigned i = 1; i < size; ++i )
+            {
+                std::string res( matches[i].first, matches[i].second );
+                std::cout << "matches [" << i << "] = " << res << std::endl;  // DEBUG
+
+//                if( res.empty() == false )
+//                    return res;
+            }
+
+            return std::string();
+        }
+        else
+        {
+            std::cout << "'" << re << "' does not match '" << str << "'. matches size(" << matches.size() << ")" << std::endl; // DEBUG
+            return std::string();
+        }
+    }
+    catch( boost::regex_error& e )
+    {
+        //throw std::invalid_argument( e.what() );
+        s << "regex error " << e.what();
+    }
+
+    return s.str();
 }
 
 NAMESPACE_TEMPLTEXT_END

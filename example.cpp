@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2187 $ $Date:: 2015-07-23 #$ $Author: serge $
+// $Revision: 2207 $ $Date:: 2015-07-29 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -182,6 +182,26 @@ int main()
     test04( t );
     test05( t );
     test06( t );
+
+    templtext::extract_function("$foo()");
+    templtext::extract_function("$foo(A)");
+    templtext::extract_function("$foo(AB)");
+    templtext::extract_function("$foo(AB,C)");
+    templtext::extract_function("$foo(AB,CD)");
+    templtext::extract_function("$foo(AB,CD,E)");
+    templtext::extract_function("$foo(AB,CD,EF)");
+    templtext::extract_function("$foo( A )");
+    templtext::extract_function("$foo( AB )");
+    templtext::extract_function("$foo( AB,C )");
+    templtext::extract_function("$foo( AB,CD )");
+    templtext::extract_function("$foo( AB,CD,E )");
+    templtext::extract_function("$foo( AB,CD,EF )");
+    templtext::extract_function("$foo( A )");
+    templtext::extract_function("$foo( AB )");
+    templtext::extract_function("$foo( AB, C )");
+    templtext::extract_function("$foo( AB, CD )");
+    templtext::extract_function("$foo( AB, CD, E )");
+    templtext::extract_function("$foo( AB, CD, EF )");
 
     return 0;
 }

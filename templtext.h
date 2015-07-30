@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2185 $ $Date:: 2015-07-22 #$ $Author: serge $
+// $Revision: 2207 $ $Date:: 2015-07-29 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_H
 #define LIB_TEMPLTEXT_H
@@ -34,6 +34,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include "namespace_lib.h"          // NAMESPACE_TEMPLTEXT_START
 
 NAMESPACE_TEMPLTEXT_START
+
+std::string extract_function( const std::string & str );
 
 class TemplText
 {

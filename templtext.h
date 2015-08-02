@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2209 $ $Date:: 2015-07-30 #$ $Author: serge $
+// $Revision: 2217 $ $Date:: 2015-07-31 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_H
 #define LIB_TEMPLTEXT_H
@@ -31,7 +31,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include <boost/property_tree/ptree.hpp>    // boost::property_tree::ptree
 
-#include "namespace_lib.h"          // NAMESPACE_TEMPLTEXT_START
+#include "templ.h"                  // Templ
 
 NAMESPACE_TEMPLTEXT_START
 
@@ -40,28 +40,6 @@ bool find_function( const std::string & str );
 
 class TemplText
 {
-public:
-    typedef std::map<std::string, std::string>  MapKeyValue;
-    typedef std::set<std::string>               SetStr;
-
-    class Templ
-    {
-    public:
-        Templ( const std::string & name, const std::string & templ, const SetStr & placeholders );
-
-        const std::string & get_name() const;
-        const std::string & get_template() const;
-        const SetStr & get_placeholders() const;
-        bool validate_tokens( const MapKeyValue & tokens, std::string & missing_token ) const;
-
-        std::string format( const MapKeyValue & tokens, bool throw_on_error = true ) const;
-
-    private:
-        std::string     name_;
-        std::string     templ_;
-        SetStr          placeholders_;
-    };
-
 public:
 
     TemplText();
@@ -81,8 +59,6 @@ private:
     void iterate_and_extract( const std::string & parent_name, const boost::property_tree::ptree & pt );
 
     void extract_templates( const boost::property_tree::ptree & pt );
-    static void extract_placeholders( SetStr & res, const std::string & str );
-    static std::string extract_name( const std::string & str );
 
 private:
 

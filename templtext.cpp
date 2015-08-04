@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2217 $ $Date:: 2015-07-31 #$ $Author: serge $
+// $Revision: 2234 $ $Date:: 2015-08-03 #$ $Author: serge $
 
 #include "templtext.h"                  // self
 
@@ -32,6 +32,12 @@ NAMESPACE_TEMPLTEXT_START
 
 TemplText::TemplText()
 {
+}
+
+TemplText::~TemplText()
+{
+    for( auto & e : templs_ )
+        delete e.second;
 }
 
 bool TemplText::init(
@@ -59,7 +65,7 @@ void TemplText::iterate_and_extract( const std::string & parent_name, const boos
 
         std::string templ_name = parent_name + "." + name;
 
-        Templ t( templ_name, str );
+        Templ * t = new Templ( templ_name, str );
 
         templs_.insert( MapStrToTempl::value_type( templ_name, t ) );
     }
@@ -90,7 +96,7 @@ const Templ & TemplText::get_template( const std::string & name ) const
         throw std::invalid_argument( ( "cannot find template '" + name + "'" ).c_str() );
     }
 
-    return it->second;
+    return *it->second;
 }
 
 NAMESPACE_TEMPLTEXT_END

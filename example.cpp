@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2212 $ $Date:: 2015-07-30 #$ $Author: serge $
+// $Revision: 2228 $ $Date:: 2015-08-03 #$ $Author: serge $
 
 #include <cstdio>
 #include <sstream>                          // std::stringstream
@@ -47,11 +47,11 @@ std::string show_placeholders( const std::set<std::string> & ph )
     return os.str();
 }
 
-void test02( const templtext::TemplText::Templ & t )
+void test02( const templtext::Templ & t )
 {
     std::cout << "TEST 02" << std::endl;
 
-    templtext::TemplText::MapKeyValue tokens  =
+    templtext::Templ::MapKeyValue tokens  =
     {
             { "SALUTATION", "Mr." },
             { "NAME", "John Doe" },
@@ -65,11 +65,11 @@ void test02( const templtext::TemplText::Templ & t )
     }
 }
 
-void test03( const templtext::TemplText::Templ & t )
+void test03( const templtext::Templ & t )
 {
     std::cout << "TEST 03" << std::endl;
 
-    templtext::TemplText::MapKeyValue tokens  =
+    templtext::Templ::MapKeyValue tokens  =
     {
             { "SALUTATION", "Mr." },
             { "NAME", "John Doe" },
@@ -84,11 +84,11 @@ void test03( const templtext::TemplText::Templ & t )
     }
 }
 
-void test04( const templtext::TemplText::Templ & t )
+void test04( const templtext::Templ & t )
 {
     std::cout << "TEST 04" << std::endl;
 
-    templtext::TemplText::MapKeyValue tokens  =
+    templtext::Templ::MapKeyValue tokens  =
     {
             { "SALUTATION", "Mr." },
             { "NAME", "John Doe" },
@@ -104,11 +104,11 @@ void test04( const templtext::TemplText::Templ & t )
     }
 }
 
-void test05( const templtext::TemplText::Templ & t )
+void test05( const templtext::Templ & t )
 {
     std::cout << "TEST 05" << std::endl;
 
-    templtext::TemplText::MapKeyValue tokens  =
+    templtext::Templ::MapKeyValue tokens  =
     {
             { "SALUTATION", "Mr." },
             { "NAME", "John Doe" },
@@ -127,11 +127,11 @@ void test05( const templtext::TemplText::Templ & t )
 }
 
 
-void test06( const templtext::TemplText::Templ & t )
+void test06( const templtext::Templ & t )
 {
     std::cout << "TEST 06" << std::endl;
 
-    templtext::TemplText::MapKeyValue tokens  =
+    templtext::Templ::MapKeyValue tokens  =
     {
             { "SALUTATION", "Mr." },
             { "NAME", "John Doe" },
@@ -163,19 +163,19 @@ int main()
 
         if( tt.has_template( key_1 ) )
         {
-            const templtext::TemplText::Templ & t = tt.get_template( key_1 );
+            const templtext::Templ & t = tt.get_template( key_1 );
             std::cout << "templ 0" << i << " - " << t.get_template() << " " << show_placeholders( t.get_placeholders() ) << std::endl;
         }
 
         if( tt.has_template( key_2 ) )
         {
-            const templtext::TemplText::Templ & t = tt.get_template( key_1 );
+            const templtext::Templ & t = tt.get_template( key_1 );
             std::cout << "templ 0" << i << " - " << t.get_template() << " " << show_placeholders( t.get_placeholders() ) << std::endl;
         }
     }
 
     std::string key = create_key( "Text", 3, "en" );
-    const templtext::TemplText::Templ & t = tt.get_template( key );
+    const templtext::Templ & t = tt.get_template( key );
 
     test02( t );
     test03( t );
@@ -183,6 +183,7 @@ int main()
     test05( t );
     test06( t );
 
+    /*
     templtext::extract_function("$foo()");
     templtext::extract_function("$foo(A)");
     templtext::extract_function("$foo(AB)");
@@ -205,6 +206,7 @@ int main()
 
     templtext::find_function("some text $foo( A ) what do think?");
     templtext::find_function("some text $bar( A ) with several functions $bar( B )?");
+    */
 
     return 0;
 }

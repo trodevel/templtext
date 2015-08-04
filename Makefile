@@ -83,7 +83,7 @@ EXE=
 
 #vpath %.cpp .
 
-SRCC = renderer.cpp templ.cpp templtext.cpp
+SRCC = index_matches.cpp parser.cpp renderer.cpp templ.cpp templtext.cpp
 
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCC)) $(patsubst %.c,$(OBJDIR)/%.o,$(SRCC))
 

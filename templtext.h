@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2217 $ $Date:: 2015-07-31 #$ $Author: serge $
+// $Revision: 2234 $ $Date:: 2015-08-03 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_H
 #define LIB_TEMPLTEXT_H
@@ -43,6 +43,7 @@ class TemplText
 public:
 
     TemplText();
+    ~TemplText();
 
     bool init(
             const std::string & config_file );
@@ -52,7 +53,7 @@ public:
     const Templ & get_template( const std::string & name ) const;
 
 private:
-    typedef std::map<std::string, Templ>  MapStrToTempl;
+    typedef std::map<std::string, Templ*>  MapStrToTempl;
 
 private:
 

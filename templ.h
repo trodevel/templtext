@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2220 $ $Date:: 2015-07-31 #$ $Author: serge $
+// $Revision: 2233 $ $Date:: 2015-08-03 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_TEMPL_H
 #define LIB_TEMPLTEXT_TEMPL_H
@@ -35,11 +35,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 NAMESPACE_TEMPLTEXT_START
 
-std::string extract_function( const std::string & str );
-bool find_function( const std::string & str );
-
 class Templ
 {
+    friend class Parser;
     friend class Renderer;
 
     class Elem
@@ -85,6 +83,10 @@ public:
     bool validate_tokens( const MapKeyValue & tokens, std::string & missing_token ) const;
 
     std::string format( const MapKeyValue & tokens, bool throw_on_error = true ) const;
+
+private:
+    Templ( const Templ& )               = delete;
+    Templ& operator= ( const Templ& )   = delete;
 
 private:
     void parse();

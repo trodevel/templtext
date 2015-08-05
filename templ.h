@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2233 $ $Date:: 2015-08-03 #$ $Author: serge $
+// $Revision: 2245 $ $Date:: 2015-08-04 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_TEMPL_H
 #define LIB_TEMPLTEXT_TEMPL_H
@@ -28,8 +28,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <vector>                   // std::vector
 #include <map>                      // std::map
 #include <set>                      // std::set
-
-#include <boost/property_tree/ptree.hpp>    // boost::property_tree::ptree
 
 #include "namespace_lib.h"          // NAMESPACE_TEMPLTEXT_START
 
@@ -74,7 +72,7 @@ public:
     typedef std::set<std::string>               SetStr;
 
 public:
-    Templ( const std::string & name, const std::string & templ );
+    Templ( const std::string & templ, const std::string & name = std::string() );
     ~Templ();
 
     const std::string & get_name() const;

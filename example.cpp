@@ -19,33 +19,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2228 $ $Date:: 2015-08-03 #$ $Author: serge $
+// $Revision: 2257 $ $Date:: 2015-08-04 #$ $Author: serge $
 
-#include <cstdio>
+#include <iostream>                         // std::cout
 #include <sstream>                          // std::stringstream
+#include <memory>                           // std::unique_ptr
 
-#include "templtext.h"                      // TemplText
-
-std::string create_key( const std::string & name, int num, const std::string & lang )
-{
-    std::stringstream os;
-
-    os << "Templates." << name << "0" << num << "[" << lang << "]";
-
-    return os.str();
-}
-
-std::string show_placeholders( const std::set<std::string> & ph )
-{
-    std::stringstream os;
-
-    os << ph.size() << ": ";
-
-    for( auto & s : ph )
-        os << s << " ";
-
-    return os.str();
-}
+#include "templ.h"                          // Templ
 
 void test02( const templtext::Templ & t )
 {
@@ -152,61 +132,65 @@ void test06( const templtext::Templ & t )
 
 int main()
 {
-    templtext::TemplText tt;
+    using namespace templtext;
 
-    tt.init( "templates.ini" );
-
-    for( int i = 1; i <= 5; ++i )
     {
-        std::string key_1 = create_key( "Text", i, "en" );
-        std::string key_2 = create_key( "Text", i, "de" );
+        std::unique_ptr<Templ> t1( new Templ( "%TEST1" ) );
+        std::unique_ptr<Templ> t2( new Templ( "%TEST2 " ) );
+        std::unique_ptr<Templ> t3( new Templ( " %TEST3" ) );
+        std::unique_ptr<Templ> t4( new Templ( " %TEST4 " ) );
 
-        if( tt.has_template( key_1 ) )
-        {
-            const templtext::Templ & t = tt.get_template( key_1 );
-            std::cout << "templ 0" << i << " - " << t.get_template() << " " << show_placeholders( t.get_placeholders() ) << std::endl;
-        }
+        std::unique_ptr<Templ> t5( new Templ( "%{TEST5}" ) );
+        std::unique_ptr<Templ> t6( new Templ( "%{TEST6} " ) );
+        std::unique_ptr<Templ> t7( new Templ( " %{TEST7}" ) );
+        std::unique_ptr<Templ> t8( new Templ( " %{TEST8} " ) );
 
-        if( tt.has_template( key_2 ) )
-        {
-            const templtext::Templ & t = tt.get_template( key_1 );
-            std::cout << "templ 0" << i << " - " << t.get_template() << " " << show_placeholders( t.get_placeholders() ) << std::endl;
-        }
+        std::unique_ptr<Templ> t9( new Templ( " %{TEST9A} %TEST9B" ) );
+        std::unique_ptr<Templ> t10( new Templ( " %{TEST9A} %TEST9B" ) );
+
+        std::unique_ptr<Templ> t11( new Templ( "$foo11()") );
+        std::unique_ptr<Templ> t12( new Templ( "$foo12(A)") );
+        std::unique_ptr<Templ> t13( new Templ( "$foo13(AB)") );
+        std::unique_ptr<Templ> t14( new Templ( "$foo14(AB,C)") );
+        std::unique_ptr<Templ> t15( new Templ( "$foo15(AB,CD)") );
+        std::unique_ptr<Templ> t16( new Templ( "$foo16(AB,CD,E)") );
+        std::unique_ptr<Templ> t17( new Templ( "$foo17(AB,CD,EF)") );
+        std::unique_ptr<Templ> t18( new Templ( "$foo( A )") );
+        std::unique_ptr<Templ> t19( new Templ( "$foo( AB )") );
+        std::unique_ptr<Templ> t20( new Templ( "$foo( AB,C )") );
+        std::unique_ptr<Templ> t21( new Templ( "$foo( AB,CD )") );
+        std::unique_ptr<Templ> t22( new Templ( "$foo( AB,CD,E )") );
+        std::unique_ptr<Templ> t23( new Templ( "$foo( AB,CD,EF )") );
+        std::unique_ptr<Templ> t24( new Templ( "$foo( A )") );
+        std::unique_ptr<Templ> t25( new Templ( "$foo( AB )") );
+        std::unique_ptr<Templ> t26( new Templ( "$foo( AB, C )") );
+        std::unique_ptr<Templ> t27( new Templ( "$foo( AB, CD )") );
+        std::unique_ptr<Templ> t28( new Templ( "$foo( AB, CD, E )") );
+        std::unique_ptr<Templ> t29( new Templ( "$foo( AB, CD, EF )") );
+
+        std::unique_ptr<Templ> t30( new Templ( "some text $foo( A ) what do think?") );
+        std::unique_ptr<Templ> t31( new Templ( "some text $bar( A ) with several functions $bar( B )?") );
+
     }
+    Templ * t = new Templ( "Hello. %SALUTATION %NAME is greeting you. %TEXT." );
 
-    std::string key = create_key( "Text", 3, "en" );
-    const templtext::Templ & t = tt.get_template( key );
+    test02( *t );
+    test03( *t );
+    test04( *t );
+    test05( *t );
+    test06( *t );
 
-    test02( t );
-    test03( t );
-    test04( t );
-    test05( t );
-    test06( t );
+    delete t;
 
-    /*
-    templtext::extract_function("$foo()");
-    templtext::extract_function("$foo(A)");
-    templtext::extract_function("$foo(AB)");
-    templtext::extract_function("$foo(AB,C)");
-    templtext::extract_function("$foo(AB,CD)");
-    templtext::extract_function("$foo(AB,CD,E)");
-    templtext::extract_function("$foo(AB,CD,EF)");
-    templtext::extract_function("$foo( A )");
-    templtext::extract_function("$foo( AB )");
-    templtext::extract_function("$foo( AB,C )");
-    templtext::extract_function("$foo( AB,CD )");
-    templtext::extract_function("$foo( AB,CD,E )");
-    templtext::extract_function("$foo( AB,CD,EF )");
-    templtext::extract_function("$foo( A )");
-    templtext::extract_function("$foo( AB )");
-    templtext::extract_function("$foo( AB, C )");
-    templtext::extract_function("$foo( AB, CD )");
-    templtext::extract_function("$foo( AB, CD, E )");
-    templtext::extract_function("$foo( AB, CD, EF )");
+    Templ * tf1 = new Templ( "current time is $now(). OK" );
+    Templ * tf2 = new Templ( "first month is $month( 1, EN ) (English) $month( 1, DE ) (German)" );
+    Templ * tf3 = new Templ( "first month is $month( 1, %LANG )" );
+    Templ * tf4 = new Templ( "some complex function with 3 params $foo( par1, par2, par3 )" );
 
-    templtext::find_function("some text $foo( A ) what do think?");
-    templtext::find_function("some text $bar( A ) with several functions $bar( B )?");
-    */
+    delete tf1;
+    delete tf2;
+    delete tf3;
+    delete tf4;
 
     return 0;
 }

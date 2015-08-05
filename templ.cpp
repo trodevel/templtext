@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2229 $ $Date:: 2015-08-03 #$ $Author: serge $
+// $Revision: 2243 $ $Date:: 2015-08-04 #$ $Author: serge $
 
 #include "templ.h"                      // self
 #include "renderer.h"                   // Renderer
@@ -35,7 +35,7 @@ Templ::Text::Text( const std::string & text ):
 {
 }
 
-Templ::Templ( const std::string & name, const std::string & templ ):
+Templ::Templ( const std::string & templ, const std::string & name ):
     name_( name ),
     templ_( templ )
 {

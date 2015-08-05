@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2232 $ $Date:: 2015-08-03 #$ $Author: serge $
+// $Revision: 2253 $ $Date:: 2015-08-04 #$ $Author: serge $
 
 
 #ifndef LIB_TEMPLTEXT_INDEX_MATCHES_H
@@ -38,7 +38,7 @@ NAMESPACE_TEMPLTEXT_START
 
 typedef std::pair<std::string::difference_type, std::string::difference_type>   PosLen;
 
-void index_matches( boost::regex& re, const std::string& input, std::vector<PosLen> & res );
+void index_matches( const boost::regex& re, const std::string& input, std::vector<PosLen> & res );
 
 NAMESPACE_TEMPLTEXT_END
 

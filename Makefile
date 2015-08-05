@@ -20,7 +20,7 @@ endif
 BOOST_INC=$(BOOST_PATH)
 BOOST_LIB_PATH=$(BOOST_PATH)/stage/lib
 
-BOOST_LIB_NAMES := system regex
+BOOST_LIB_NAMES := regex
 BOOST_LIBS = $(patsubst %,$(BOOST_LIB_PATH)/libboost_%.a,$(BOOST_LIB_NAMES))
 
 
@@ -83,7 +83,7 @@ EXE=
 
 #vpath %.cpp .
 
-SRCC = index_matches.cpp parser.cpp renderer.cpp templ.cpp templtext.cpp
+SRCC = index_matches.cpp parser.cpp renderer.cpp templ.cpp
 
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCC)) $(patsubst %.c,$(OBJDIR)/%.o,$(SRCC))
 

@@ -19,14 +19,14 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2222 $ $Date:: 2015-08-03 #$ $Author: serge $
+// $Revision: 2253 $ $Date:: 2015-08-04 #$ $Author: serge $
 
 #include "index_matches.h"          // self
 
 NAMESPACE_TEMPLTEXT_START
 
 // stackoverflow
-void index_matches( boost::regex& re, const std::string& input, std::vector<PosLen> & res )
+void index_matches( const boost::regex& re, const std::string& input, std::vector<PosLen> & res )
 {
     std::string::difference_type abs = 0;
 

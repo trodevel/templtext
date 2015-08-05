@@ -19,11 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2221 $ $Date:: 2015-07-31 #$ $Author: serge $
+// $Revision: 2246 $ $Date:: 2015-08-04 #$ $Author: serge $
 
 #include "renderer.h"                   // self
 
 #include <stdexcept>                    // std::invalid_argument
+#include <typeinfo>                     // typeid
 
 NAMESPACE_TEMPLTEXT_START
 

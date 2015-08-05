@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2257 $ $Date:: 2015-08-04 #$ $Author: serge $
+// $Revision: 2273 $ $Date:: 2015-08-05 #$ $Author: serge $
 
 #include <iostream>                         // std::cout
 #include <sstream>                          // std::stringstream
@@ -134,6 +134,7 @@ int main()
 {
     using namespace templtext;
 
+
     {
         std::unique_ptr<Templ> t1( new Templ( "%TEST1" ) );
         std::unique_ptr<Templ> t2( new Templ( "%TEST2 " ) );
@@ -148,28 +149,44 @@ int main()
         std::unique_ptr<Templ> t9( new Templ( " %{TEST9A} %TEST9B" ) );
         std::unique_ptr<Templ> t10( new Templ( " %{TEST9A} %TEST9B" ) );
 
-        std::unique_ptr<Templ> t11( new Templ( "$foo11()") );
-        std::unique_ptr<Templ> t12( new Templ( "$foo12(A)") );
-        std::unique_ptr<Templ> t13( new Templ( "$foo13(AB)") );
-        std::unique_ptr<Templ> t14( new Templ( "$foo14(AB,C)") );
-        std::unique_ptr<Templ> t15( new Templ( "$foo15(AB,CD)") );
-        std::unique_ptr<Templ> t16( new Templ( "$foo16(AB,CD,E)") );
-        std::unique_ptr<Templ> t17( new Templ( "$foo17(AB,CD,EF)") );
-        std::unique_ptr<Templ> t18( new Templ( "$foo( A )") );
-        std::unique_ptr<Templ> t19( new Templ( "$foo( AB )") );
-        std::unique_ptr<Templ> t20( new Templ( "$foo( AB,C )") );
-        std::unique_ptr<Templ> t21( new Templ( "$foo( AB,CD )") );
-        std::unique_ptr<Templ> t22( new Templ( "$foo( AB,CD,E )") );
-        std::unique_ptr<Templ> t23( new Templ( "$foo( AB,CD,EF )") );
-        std::unique_ptr<Templ> t24( new Templ( "$foo( A )") );
-        std::unique_ptr<Templ> t25( new Templ( "$foo( AB )") );
-        std::unique_ptr<Templ> t26( new Templ( "$foo( AB, C )") );
-        std::unique_ptr<Templ> t27( new Templ( "$foo( AB, CD )") );
-        std::unique_ptr<Templ> t28( new Templ( "$foo( AB, CD, E )") );
-        std::unique_ptr<Templ> t29( new Templ( "$foo( AB, CD, EF )") );
+        std::unique_ptr<Templ> t11( new Templ( ". %TEXT." ) );
+    }
 
-        std::unique_ptr<Templ> t30( new Templ( "some text $foo( A ) what do think?") );
-        std::unique_ptr<Templ> t31( new Templ( "some text $bar( A ) with several functions $bar( B )?") );
+    {
+
+        std::unique_ptr<Templ> t11( new Templ( "$foo11()") );
+        std::unique_ptr<Templ> t12( new Templ( "$foo12(P)") );
+        std::unique_ptr<Templ> t13( new Templ( "$foo13(P1)") );
+        std::unique_ptr<Templ> t14( new Templ( "$foo14(P1,P)") );
+        std::unique_ptr<Templ> t15( new Templ( "$foo15(P1,P2)") );
+        std::unique_ptr<Templ> t16( new Templ( "$foo16(P1,P2,P)") );
+        std::unique_ptr<Templ> t17( new Templ( "$foo17(P1,P2,P3)") );
+        std::unique_ptr<Templ> t18( new Templ( "$foo( P )") );
+        std::unique_ptr<Templ> t19( new Templ( "$foo( P1 )") );
+        std::unique_ptr<Templ> t20( new Templ( "$foo( P1,P )") );
+        std::unique_ptr<Templ> t21( new Templ( "$foo( P1,P2 )") );
+        std::unique_ptr<Templ> t22( new Templ( "$foo( P1,P2,P )") );
+        std::unique_ptr<Templ> t23( new Templ( "$foo( P1,P2,P3 )") );
+        std::unique_ptr<Templ> t24( new Templ( "$foo( P )") );
+        std::unique_ptr<Templ> t25( new Templ( "$foo( P1 )") );
+        std::unique_ptr<Templ> t26( new Templ( "$foo( P1, P )") );
+        std::unique_ptr<Templ> t27( new Templ( "$foo( P1, P2 )") );
+        std::unique_ptr<Templ> t28( new Templ( "$foo( P1, P2, P )") );
+        std::unique_ptr<Templ> t29( new Templ( "$foo( P1, P2, P3 )") );
+
+        std::unique_ptr<Templ> t30( new Templ( "$foo( %P )") );
+        std::unique_ptr<Templ> t31( new Templ( "$foo( %P1 )") );
+        std::unique_ptr<Templ> t32( new Templ( "$foo( %P1, %P )") );
+        std::unique_ptr<Templ> t33( new Templ( "$foo( %P1, %P2 )") );
+        std::unique_ptr<Templ> t34( new Templ( "$foo( %P1, %P2, %P )") );
+        std::unique_ptr<Templ> t35( new Templ( "$foo( %P1, %P2, %P3 )") );
+
+        std::unique_ptr<Templ> t36( new Templ( "$foo( 'free text1' )") );
+        std::unique_ptr<Templ> t37( new Templ( "$foo( 'free text1', 'free text2' )") );
+        std::unique_ptr<Templ> t38( new Templ( "$foo( 'free text1', 'free text2', 'free,text3' )") );
+
+        std::unique_ptr<Templ> t39( new Templ( "some text $foo( A ) what do think?") );
+        std::unique_ptr<Templ> t40( new Templ( "some text $bar( A ) with several functions $bar( B )?") );
 
     }
     Templ * t = new Templ( "Hello. %SALUTATION %NAME is greeting you. %TEXT." );

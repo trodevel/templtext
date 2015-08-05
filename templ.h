@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2245 $ $Date:: 2015-08-04 #$ $Author: serge $
+// $Revision: 2265 $ $Date:: 2015-08-05 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_TEMPL_H
 #define LIB_TEMPLTEXT_TEMPL_H
@@ -56,8 +56,10 @@ class Templ
     class Func: virtual public Elem
     {
     public:
-        Func( const std::string & name );
-        std::string name_;
+        Func( const std::string & name, const Elems & elems );
+        ~Func();
+        std::string     name_;
+        Elems           elems_;
     };
 
     class Var: virtual public Elem

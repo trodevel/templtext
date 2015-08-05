@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2231 $ $Date:: 2015-08-03 #$ $Author: serge $
+// $Revision: 2266 $ $Date:: 2015-08-05 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_PARSER_H
 #define LIB_TEMPLTEXT_PARSER_H
@@ -50,11 +50,16 @@ private:
     void parse();
     void process_poslen( const std::vector<PosLen> & poslen );
     Elem* convert_match_to_elem( const std::string & str );
+    Func* convert_match_to_func( const std::string & name, const std::string & par1, const std::string & par2, const std::string & par3 );
+    Elem* convert_func_par_to_elem( const std::string & par );
+    Var* create_var( const std::string & name );
 
 private:
     std::string     templ_;
     SetStr          placeholders_;
     Elems           elems_;
+
+    static const bool show_debug_output;
 };
 
 

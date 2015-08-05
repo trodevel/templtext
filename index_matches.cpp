@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2253 $ $Date:: 2015-08-04 #$ $Author: serge $
+// $Revision: 2272 $ $Date:: 2015-08-05 #$ $Author: serge $
 
 #include "index_matches.h"          // self
 
@@ -41,7 +41,7 @@ void index_matches( const boost::regex& re, const std::string& input, std::vecto
 
         abs += p;
 
-        std::cout << "found at pos " << p << " len " << l << " '" << input.substr( abs, l ) << "'" << std::endl;
+        std::cout << "found at pos " << abs << " len " << l << " '" << input.substr( abs, l ) << "'" << std::endl;
 
         res.push_back( PosLen( abs, l ) );
 

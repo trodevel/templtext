@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2243 $ $Date:: 2015-08-04 #$ $Author: serge $
+// $Revision: 2271 $ $Date:: 2015-08-05 #$ $Author: serge $
 
 #include "templ.h"                      // self
 #include "renderer.h"                   // Renderer
@@ -33,6 +33,26 @@ NAMESPACE_TEMPLTEXT_START
 Templ::Text::Text( const std::string & text ):
     text_( text )
 {
+    std::cout << "text '" << text << "'" << std::endl;
+}
+
+Templ::Func::Func( const std::string & name, const Elems & elems ):
+    name_( name ),
+    elems_( elems )
+{
+    std::cout << "func '" << name << "'" << std::endl;
+}
+
+Templ::Func::~Func()
+{
+    for( auto e : elems_ )
+        delete e;
+}
+
+Templ::Var::Var( const std::string & name ):
+    name_( name )
+{
+    std::cout << "var '" << name << "'" << std::endl;
 }
 
 Templ::Templ( const std::string & templ, const std::string & name ):

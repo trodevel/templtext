@@ -19,18 +19,21 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2246 $ $Date:: 2015-08-04 #$ $Author: serge $
+// $Revision: 2279 $ $Date:: 2015-08-06 #$ $Author: serge $
 
 #include "renderer.h"                   // self
 
 #include <stdexcept>                    // std::invalid_argument
 #include <typeinfo>                     // typeid
 
+#include "elems.h"                      // Elem, Text, Func, Var
+
 NAMESPACE_TEMPLTEXT_START
 
-Renderer::Renderer( const Templ::Elems & elems, const Templ::MapKeyValue & tokens, bool throw_on_error ):
+Renderer::Renderer( const Templ::Elems & elems, const Templ::MapKeyValue & tokens, Templ::FuncProc func_proc, bool throw_on_error ):
         elems_( elems ),
         tokens_( tokens ),
+        func_proc_( func_proc ),
         throw_on_error_( throw_on_error )
 {
     render();
@@ -77,6 +80,13 @@ void Renderer::render( std::ostringstream & os, const Templ::Text * e )
 
 void Renderer::render( std::ostringstream & os, const Templ::Func * e )
 {
+    if( func_proc_ == false )
+    {
+        if( throw_on_error_ )
+            throw std::runtime_error( "Renderer: cannot call functions - FuncProc is not defined" );
+
+        return;
+    }
 }
 
 void Renderer::render( std::ostringstream & os, const Templ::Var * e )

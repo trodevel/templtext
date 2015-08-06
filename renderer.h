@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2221 $ $Date:: 2015-07-31 #$ $Author: serge $
+// $Revision: 2278 $ $Date:: 2015-08-06 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_RENDERER_H
 #define LIB_TEMPLTEXT_RENDERER_H
@@ -33,7 +33,7 @@ NAMESPACE_TEMPLTEXT_START
 class Renderer
 {
 public:
-    Renderer( const Templ::Elems & elems, const Templ::MapKeyValue & tokens, bool throw_on_error );
+    Renderer( const Templ::Elems & elems, const Templ::MapKeyValue & tokens, Templ::FuncProc func_proc, bool throw_on_error );
 
     const std::string & get() const;
 
@@ -49,6 +49,7 @@ private:
 
     const Templ::Elems   & elems_;
     const Templ::MapKeyValue        & tokens_;
+    Templ::FuncProc                 func_proc_;
     bool                            throw_on_error_;
     std::string                     res_;
 };

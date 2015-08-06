@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2274 $ $Date:: 2015-08-05 #$ $Author: serge $
+// $Revision: 2277 $ $Date:: 2015-08-06 #$ $Author: serge $
 
 #include "parser.h"                     // self
 
@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <boost/regex.hpp>              // boost::regex - for GCC older than 4.9.0
 #include <boost/algorithm/string/predicate.hpp>     // boost::algorithm::ends_with
 
+#include "elems.h"                      // Elem, Text, Func, Var
 
 NAMESPACE_TEMPLTEXT_START
 
@@ -172,9 +173,21 @@ Parser::Func* Parser::convert_match_to_func( const std::string & name, const std
 {
     Elems elems;
 
-    elems.push_back( convert_func_par_to_elem( par1 ) );
-    elems.push_back( convert_func_par_to_elem( par2 ) );
-    elems.push_back( convert_func_par_to_elem( par3 ) );
+    if( par3.size() )
+    {
+        elems.push_back( convert_func_par_to_elem( par1 ) );
+        elems.push_back( convert_func_par_to_elem( par2 ) );
+        elems.push_back( convert_func_par_to_elem( par3 ) );
+    }
+    else if( par2.size() )
+    {
+        elems.push_back( convert_func_par_to_elem( par1 ) );
+        elems.push_back( convert_func_par_to_elem( par2 ) );
+    }
+    else if( par1.size() )
+    {
+        elems.push_back( convert_func_par_to_elem( par1 ) );
+    }
 
     return new Func( name, elems );
 }

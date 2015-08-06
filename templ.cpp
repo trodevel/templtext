@@ -19,11 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2271 $ $Date:: 2015-08-05 #$ $Author: serge $
+// $Revision: 2278 $ $Date:: 2015-08-06 #$ $Author: serge $
 
 #include "templ.h"                      // self
 #include "renderer.h"                   // Renderer
 #include "parser.h"                     // Parser
+#include "elems.h"                      // Elem, Text, Func, Var
 
 #include <stdexcept>                    // std::invalid_argument
 
@@ -97,9 +98,14 @@ bool Templ::validate_tokens( const MapKeyValue & tokens, std::string & missing_t
     return true;
 }
 
+void Templ::set_func_proc( FuncProc func_proc )
+{
+    func_proc_  = func_proc;
+}
+
 std::string Templ::format( const MapKeyValue & tokens, bool throw_on_error ) const
 {
-    Renderer r( elems_, tokens, throw_on_error );
+    Renderer r( elems_, tokens, func_proc_, throw_on_error );
 
     std::string res = r.get();
 

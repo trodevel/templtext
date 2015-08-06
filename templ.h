@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2265 $ $Date:: 2015-08-05 #$ $Author: serge $
+// $Revision: 2276 $ $Date:: 2015-08-06 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_TEMPL_H
 #define LIB_TEMPLTEXT_TEMPL_H
@@ -28,6 +28,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 #include <vector>                   // std::vector
 #include <map>                      // std::map
 #include <set>                      // std::set
+#include <functional>               // std::function
 
 #include "namespace_lib.h"          // NAMESPACE_TEMPLTEXT_START
 
@@ -38,40 +39,18 @@ class Templ
     friend class Parser;
     friend class Renderer;
 
-    class Elem
-    {
-    public:
-        virtual ~Elem() {}
-    };
+    class Elem;
 
     typedef std::vector<Elem*>  Elems;
 
-    class Text: virtual public Elem
-    {
-    public:
-        Text( const std::string & text );
-        std::string text_;
-    };
-
-    class Func: virtual public Elem
-    {
-    public:
-        Func( const std::string & name, const Elems & elems );
-        ~Func();
-        std::string     name_;
-        Elems           elems_;
-    };
-
-    class Var: virtual public Elem
-    {
-    public:
-        Var( const std::string & name );
-        std::string name_;
-    };
+    class Text;
+    class Func;
+    class Var;
 
 public:
     typedef std::map<std::string, std::string>  MapKeyValue;
     typedef std::set<std::string>               SetStr;
+    typedef std::function<bool( const std::string & name, const std::vector<std::string> & par )> FuncProc;
 
 public:
     Templ( const std::string & templ, const std::string & name = std::string() );
@@ -81,6 +60,7 @@ public:
     const std::string & get_template() const;
     const SetStr & get_placeholders() const;
     bool validate_tokens( const MapKeyValue & tokens, std::string & missing_token ) const;
+    void set_func_proc( FuncProc func_proc );
 
     std::string format( const MapKeyValue & tokens, bool throw_on_error = true ) const;
 
@@ -98,6 +78,7 @@ private:
     std::string     templ_;
     SetStr          placeholders_;
     Elems           elems_;
+    FuncProc        func_proc_;
 };
 
 

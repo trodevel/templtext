@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2278 $ $Date:: 2015-08-06 #$ $Author: serge $
+// $Revision: 2289 $ $Date:: 2015-08-07 #$ $Author: serge $
 
 #include "templ.h"                      // self
 #include "renderer.h"                   // Renderer
@@ -34,14 +34,14 @@ NAMESPACE_TEMPLTEXT_START
 Templ::Text::Text( const std::string & text ):
     text_( text )
 {
-    std::cout << "text '" << text << "'" << std::endl;
+    // std::cout << "text '" << text << "'" << std::endl; // DEBUG
 }
 
 Templ::Func::Func( const std::string & name, const Elems & elems ):
     name_( name ),
     elems_( elems )
 {
-    std::cout << "func '" << name << "'" << std::endl;
+    // std::cout << "func '" << name << "'" << std::endl; // DEBUG
 }
 
 Templ::Func::~Func()
@@ -53,7 +53,7 @@ Templ::Func::~Func()
 Templ::Var::Var( const std::string & name ):
     name_( name )
 {
-    std::cout << "var '" << name << "'" << std::endl;
+    // std::cout << "var '" << name << "'" << std::endl; // DEBUG
 }
 
 Templ::Templ( const std::string & templ, const std::string & name ):
@@ -114,10 +114,7 @@ std::string Templ::format( const MapKeyValue & tokens, bool throw_on_error ) con
 
 void Templ::parse()
 {
-    Parser p( templ_ );
-
-    placeholders_   = p.get_placeholders();
-    elems_          = p.get_elems();
+    Parser p( templ_, placeholders_, elems_ );
 }
 
 NAMESPACE_TEMPLTEXT_END

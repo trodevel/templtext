@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2266 $ $Date:: 2015-08-05 #$ $Author: serge $
+// $Revision: 2288 $ $Date:: 2015-08-07 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_PARSER_H
 #define LIB_TEMPLTEXT_PARSER_H
@@ -41,10 +41,7 @@ class Parser
     typedef Templ::Var      Var;
 
 public:
-    Parser( const std::string & templ );
-
-    const SetStr & get_placeholders() const;
-    const Elems & get_elems() const;
+    Parser( const std::string & templ, SetStr & placeholders, Elems & elems );
 
 private:
     void parse();
@@ -56,8 +53,8 @@ private:
 
 private:
     std::string     templ_;
-    SetStr          placeholders_;
-    Elems           elems_;
+    SetStr          & placeholders_;
+    Elems           & elems_;
 
     static const bool show_debug_output;
 };

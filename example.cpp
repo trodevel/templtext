@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2273 $ $Date:: 2015-08-05 #$ $Author: serge $
+// $Revision: 2291 $ $Date:: 2015-08-07 #$ $Author: serge $
 
 #include <iostream>                         // std::cout
 #include <sstream>                          // std::stringstream
@@ -27,113 +27,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #include "templ.h"                          // Templ
 
-void test02( const templtext::Templ & t )
-{
-    std::cout << "TEST 02" << std::endl;
-
-    templtext::Templ::MapKeyValue tokens  =
-    {
-            { "SALUTATION", "Mr." },
-            { "NAME", "John Doe" },
-    };
-
-    std::string missing_token;
-
-    if( t.validate_tokens( tokens, missing_token ) == false )
-    {
-        std::cout << "missing token '" << missing_token << "' in template " << t.get_name() << std::endl;
-    }
-}
-
-void test03( const templtext::Templ & t )
-{
-    std::cout << "TEST 03" << std::endl;
-
-    templtext::Templ::MapKeyValue tokens  =
-    {
-            { "SALUTATION", "Mr." },
-            { "NAME", "John Doe" },
-            { "TEXT", "Hello World" }
-    };
-
-    std::string missing_token;
-
-    if( t.validate_tokens( tokens, missing_token ) )
-    {
-        std::cout << "all tokens are present in template " << t.get_name() << std::endl;
-    }
-}
-
-void test04( const templtext::Templ & t )
-{
-    std::cout << "TEST 04" << std::endl;
-
-    templtext::Templ::MapKeyValue tokens  =
-    {
-            { "SALUTATION", "Mr." },
-            { "NAME", "John Doe" },
-    };
-
-    try
-    {
-        std::string res = t.format( tokens );
-    }
-    catch ( std::exception & e )
-    {
-        std::cout << "got exception '" << e.what() << "'" << std::endl;
-    }
-}
-
-void test05( const templtext::Templ & t )
-{
-    std::cout << "TEST 05" << std::endl;
-
-    templtext::Templ::MapKeyValue tokens  =
-    {
-            { "SALUTATION", "Mr." },
-            { "NAME", "John Doe" },
-    };
-
-    try
-    {
-        std::string res = t.format( tokens, false );
-
-        std::cout << "formatted string is '" << res << "'" << std::endl;
-    }
-    catch ( std::exception & e )
-    {
-        std::cout << "got exception '" << e.what() << "'" << std::endl;
-    }
-}
-
-
-void test06( const templtext::Templ & t )
-{
-    std::cout << "TEST 06" << std::endl;
-
-    templtext::Templ::MapKeyValue tokens  =
-    {
-            { "SALUTATION", "Mr." },
-            { "NAME", "John Doe" },
-            { "TEXT", "Hello World" }
-    };
-
-    try
-    {
-        std::string res = t.format( tokens );
-
-        std::cout << "formatted string is '" << res << "'" << std::endl;
-    }
-    catch ( std::exception & e )
-    {
-        std::cout << "got exception '" << e.what() << "'" << std::endl;
-    }
-}
-
-int main()
+void test01()
 {
     using namespace templtext;
-
 
     {
         std::unique_ptr<Templ> t1( new Templ( "%TEST1" ) );
@@ -189,25 +85,287 @@ int main()
         std::unique_ptr<Templ> t40( new Templ( "some text $bar( A ) with several functions $bar( B )?") );
 
     }
-    Templ * t = new Templ( "Hello. %SALUTATION %NAME is greeting you. %TEXT." );
+}
+
+void test02( const templtext::Templ & t )
+{
+    std::cout << "TEST 02" << std::endl;
+
+    templtext::Templ::MapKeyValue tokens  =
+    {
+            { "SALUTATION", "Mr." },
+            { "NAME", "John Doe" },
+            { "MYNAME", "Ty Coon" }
+    };
+
+    std::string missing_token;
+
+    if( t.validate_tokens( tokens, missing_token ) == false )
+    {
+        std::cout << "missing token '" << missing_token << "' in template " << t.get_name() << std::endl;
+    }
+}
+
+void test03( const templtext::Templ & t )
+{
+    std::cout << "TEST 03" << std::endl;
+
+    templtext::Templ::MapKeyValue tokens  =
+    {
+            { "SALUTATION", "Mr." },
+            { "NAME", "John Doe" },
+            { "TEXT", "an interview" },
+            { "MYNAME", "Ty Coon" }
+    };
+
+    std::string missing_token;
+
+    if( t.validate_tokens( tokens, missing_token ) )
+    {
+        std::cout << "all tokens are present in template " << t.get_name() << std::endl;
+    }
+}
+
+void test04( const templtext::Templ & t )
+{
+    std::cout << "TEST 04" << std::endl;
+
+    templtext::Templ::MapKeyValue tokens  =
+    {
+            { "SALUTATION", "Mr." },
+            { "NAME", "John Doe" },
+            { "MYNAME", "Ty Coon" }
+    };
+
+    try
+    {
+        std::string res = t.format( tokens );
+    }
+    catch ( std::exception & e )
+    {
+        std::cout << "got exception '" << e.what() << "'" << std::endl;
+    }
+}
+
+void test05( const templtext::Templ & t )
+{
+    std::cout << "TEST 05" << std::endl;
+
+    templtext::Templ::MapKeyValue tokens  =
+    {
+            { "SALUTATION", "Mr." },
+            { "NAME", "John Doe" },
+            { "MYNAME", "Ty Coon" }
+    };
+
+    try
+    {
+        std::string res = t.format( tokens, false );
+
+        std::cout << "formatted string is '" << res << "'" << std::endl;
+    }
+    catch ( std::exception & e )
+    {
+        std::cout << "got exception '" << e.what() << "'" << std::endl;
+    }
+}
+
+
+void test06( const templtext::Templ & t )
+{
+    std::cout << "TEST 06" << std::endl;
+
+    templtext::Templ::MapKeyValue tokens  =
+    {
+            { "SALUTATION", "Mr." },
+            { "NAME", "John Doe" },
+            { "TEXT", "an interview" },
+            { "MYNAME", "Ty Coon" }
+    };
+
+    try
+    {
+        std::string res = t.format( tokens );
+
+        std::cout << "formatted string is '" << res << "'" << std::endl;
+    }
+    catch ( std::exception & e )
+    {
+        std::cout << "got exception '" << e.what() << "'" << std::endl;
+    }
+}
+
+void test07( const templtext::Templ & t )
+{
+    std::cout << "TEST 06" << std::endl;
+
+    templtext::Templ::MapKeyValue tokens  =
+    {
+            { "SALUTATION", "Mr." },
+            { "NAME", "John Doe" },
+            { "TEXT", "a cup of coffee" },
+            { "MYNAME", "Ty Coon" }
+    };
+
+    try
+    {
+        std::string res = t.format( tokens );
+
+        std::cout << "formatted string is '" << res << "'" << std::endl;
+    }
+    catch ( std::exception & e )
+    {
+        std::cout << "got exception '" << e.what() << "'" << std::endl;
+    }
+}
+
+const std::string & decode( int i )
+{
+    static const std::string fruits[]=
+    {
+        "unknown",
+        "apple",
+        "orange"
+    };
+
+    if( i < 0 || i > 2 )
+        return fruits[0];
+
+    return fruits[i];
+}
+
+const std::string & decode_loc( int i, const std::string & loc )
+{
+    static const std::string fruits[2][3]=
+    {
+        {
+            "unknown",
+            "apple",
+            "orange"
+        },
+        {
+            "Unbekannt",
+            "Apfel",
+            "Orange"
+        },
+    };
+
+    if( i < 0 || i > 2 )
+        i = 0;
+
+    if( loc == "EN" )
+        return fruits[0][i];
+    else if( loc == "DE" )
+        return fruits[1][i];
+
+    return fruits[0][i];
+}
+
+bool func( std::string & res, const std::string & name, const std::vector<std::string> & par )
+{
+    if( name == "decode" )
+    {
+        if( par.empty() )
+            return false;
+
+        res = decode( std::stoi( par[0] ));
+        return true;
+    }
+    else if( name == "decode_loc" )
+    {
+        if( par.size() != 2 )
+            return false;
+
+        res = decode_loc( std::stoi( par[0] ), par[1] );
+        return true;
+    }
+
+    return false;
+}
+
+void test08()
+{
+    using namespace templtext;
+
+    std::unique_ptr<Templ> tf1( new Templ( "You have got an $decode( 1 )." ) );
+    std::unique_ptr<Templ> tf2( new Templ( "You have got an $decode( 2 )." ) );
+    std::unique_ptr<Templ> tf3( new Templ( "English version - $decode_loc( 1, EN )." ) );
+    std::unique_ptr<Templ> tf4( new Templ( "German version  - $decode_loc( 1, DE )." ) );
+    std::unique_ptr<Templ> tf5( new Templ( "Flexible version - $decode_loc( 1, %LANG )." ) );
+
+    tf1->set_func_proc( func );
+    tf2->set_func_proc( func );
+    tf3->set_func_proc( func );
+    tf4->set_func_proc( func );
+    tf5->set_func_proc( func );
+
+    Templ::MapKeyValue map1 =
+    {
+            { "LANG", "EN" }
+    };
+
+    Templ::MapKeyValue map2 =
+    {
+            { "LANG", "DE" }
+    };
+
+    std::cout << tf1->format() << std::endl;
+    std::cout << tf2->format() << std::endl;
+    std::cout << tf3->format() << std::endl;
+    std::cout << tf4->format() << std::endl;
+    std::cout << tf5->format( map1 ) << std::endl;
+    std::cout << tf5->format( map2 ) << std::endl;
+}
+
+void simple_example01()
+{
+    using namespace templtext;
+
+    Templ * t = new Templ( "Dear %SALUTATION %NAME. I would like to invite you for %TEXT. Sincerely yours, %MYNAME." );
+
+    std::map<std::string, std::string> tokens01 =
+    {
+            { "SALUTATION", "Mr." },
+            { "NAME", "John Doe" },
+            { "TEXT", "an interview" },
+            { "MYNAME", "Ty Coon" }
+    };
+
+    std::map<std::string, std::string> tokens02 =
+    {
+            { "SALUTATION", "Sweetheart" },
+            { "NAME", "Mary" },
+            { "TEXT", "a cup of coffee" },
+            { "MYNAME", "Bob" }
+    };
+
+    std::cout << t->format( tokens01 ) << std::endl;
+
+    std::cout << t->format( tokens02 ) << std::endl;
+
+    delete t;
+}
+
+int main()
+{
+    using namespace templtext;
+
+    test01();
+
+    Templ * t = new Templ( "Dear %SALUTATION %NAME. I would like to invite you for %TEXT. Sincerely yours, %MYNAME." );
 
     test02( *t );
     test03( *t );
     test04( *t );
     test05( *t );
     test06( *t );
+    test07( *t );
 
     delete t;
 
-    Templ * tf1 = new Templ( "current time is $now(). OK" );
-    Templ * tf2 = new Templ( "first month is $month( 1, EN ) (English) $month( 1, DE ) (German)" );
-    Templ * tf3 = new Templ( "first month is $month( 1, %LANG )" );
-    Templ * tf4 = new Templ( "some complex function with 3 params $foo( par1, par2, par3 )" );
+    test08();
 
-    delete tf1;
-    delete tf2;
-    delete tf3;
-    delete tf4;
+    simple_example01();
 
     return 0;
 }

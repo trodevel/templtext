@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2276 $ $Date:: 2015-08-06 #$ $Author: serge $
+// $Revision: 2285 $ $Date:: 2015-08-07 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_TEMPL_H
 #define LIB_TEMPLTEXT_TEMPL_H
@@ -50,7 +50,7 @@ class Templ
 public:
     typedef std::map<std::string, std::string>  MapKeyValue;
     typedef std::set<std::string>               SetStr;
-    typedef std::function<bool( const std::string & name, const std::vector<std::string> & par )> FuncProc;
+    typedef std::function<bool( std::string & res, const std::string & name, const std::vector<std::string> & par )> FuncProc;
 
 public:
     Templ( const std::string & templ, const std::string & name = std::string() );
@@ -62,7 +62,7 @@ public:
     bool validate_tokens( const MapKeyValue & tokens, std::string & missing_token ) const;
     void set_func_proc( FuncProc func_proc );
 
-    std::string format( const MapKeyValue & tokens, bool throw_on_error = true ) const;
+    std::string format( const MapKeyValue & tokens = MapKeyValue(), bool throw_on_error = true ) const;
 
 private:
     Templ( const Templ& )               = delete;

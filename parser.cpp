@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2277 $ $Date:: 2015-08-06 #$ $Author: serge $
+// $Revision: 2289 $ $Date:: 2015-08-07 #$ $Author: serge $
 
 #include "parser.h"                     // self
 
@@ -32,24 +32,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 NAMESPACE_TEMPLTEXT_START
 
-const bool Parser::show_debug_output = true;
+const bool Parser::show_debug_output = false;
 
-Parser::Parser( const std::string & templ ):
-    templ_( templ )
+Parser::Parser( const std::string & templ, SetStr & placeholders, Elems & elems ):
+    templ_( templ ),
+    placeholders_( placeholders ),
+    elems_( elems )
 {
     parse();
 }
-
-const Parser::SetStr & Parser::get_placeholders() const
-{
-    return placeholders_;
-}
-
-const Parser::Elems & Parser::get_elems() const
-{
-    return elems_;
-}
-
 
 const std::string & get_regex_match()
 {
@@ -98,6 +89,12 @@ void Parser::process_poslen( const std::vector<PosLen> & poslen )
         i = e.first + e.second;
 
         // std::cout << "i=" << i << std::endl; // DEBUG
+    }
+
+    if( i < templ_.size() )
+    {
+        Text * t = new Text( templ_.substr( i ) );
+        elems_.push_back( t );
     }
 }
 

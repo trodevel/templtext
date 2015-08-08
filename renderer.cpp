@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2279 $ $Date:: 2015-08-06 #$ $Author: serge $
+// $Revision: 2284 $ $Date:: 2015-08-07 #$ $Author: serge $
 
 #include "renderer.h"                   // self
 
@@ -30,7 +30,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 NAMESPACE_TEMPLTEXT_START
 
-Renderer::Renderer( const Templ::Elems & elems, const Templ::MapKeyValue & tokens, Templ::FuncProc func_proc, bool throw_on_error ):
+Renderer::Renderer( const Templ::Elems & elems, const Templ::MapKeyValue & tokens, const Templ::FuncProc & func_proc, bool throw_on_error ):
         elems_( elems ),
         tokens_( tokens ),
         func_proc_( func_proc ),
@@ -87,6 +87,31 @@ void Renderer::render( std::ostringstream & os, const Templ::Func * e )
 
         return;
     }
+
+    std::vector<std::string> pars;
+
+    for( auto & el : e->elems_ )
+    {
+        std::ostringstream os_par;
+
+        render( os_par, el );
+
+        pars.push_back( os_par.str() );
+    }
+
+    std::string res;
+
+    bool b = func_proc_( res, e->name_, pars );
+
+    if( b == false )
+    {
+        if( throw_on_error_ )
+            throw std::runtime_error( ( "Renderer: error executing function '" + e->name_ + "'" ).c_str() );
+
+        return;
+    }
+
+    os << res;
 }
 
 void Renderer::render( std::ostringstream & os, const Templ::Var * e )

@@ -42,7 +42,6 @@ ifeq "$(MODE)" "debug"
 
     CFLAGS := -Wall -std=c++0x -ggdb -g3 -Wl,--no-as-needed
     LFLAGS := -Wall -lstdc++ -lrt -ldl -lm -g
-#    LFLAGS_TEST := -Wall -lstdc++ -lrt -ldl -g -L. $(BINDIR)/$(LIBNAME).a $(BINDIR)/libutils.a -lm
     LFLAGS_TEST := -Wall -lstdc++ -lrt -ldl -g -L. -lm $(LFLAGS_STAT)
 
     TARGET=example
@@ -52,7 +51,6 @@ else
 
     CFLAGS := -Wall -std=c++0x -Wl,--no-as-needed
     LFLAGS := -Wall -lstdc++ -lrt -ldl -lm
-#    LFLAGS_TEST := -Wall -lstdc++ -lrt -ldl -L. $(BINDIR)/$(LIBNAME).a $(BINDIR)/libutils.a -lm
     LFLAGS_TEST := -Wall -lstdc++ -lrt -ldl -L. -lm $(LFLAGS_STAT)
 
     TARGET=example
@@ -80,8 +78,6 @@ LDSHAREDLIBC=-lc
 TAR=tar
 SHELL=/bin/sh
 EXE=
-
-#vpath %.cpp .
 
 SRCC = index_matches.cpp parser.cpp renderer.cpp templ.cpp
 
@@ -120,21 +116,9 @@ $(TARGET): $(BINDIR) $(BINDIR)/$(TARGET)
 $(BINDIR)/$(TARGET): $(LIBS) $(OBJDIR)/$(TARGET).o $(OBJS) $(BINDIR)/$(STATICLIB)
 	$(CC) $(CFLAGS) -o $@ $(OBJDIR)/$(TARGET).o $(BINDIR)/$(LIBNAME).a $(LIBS) $(EXT_LIBS) $(LFLAGS_TEST)
 
-# somehow this rule doesn't work
-#$(BINDIR)/lib%.a: %
-#	cd ../$<; make; cd $(project)
-#	ln -sf ../$</$@ $(BINDIR)
-
-$(LIBS):
-	for s in $(LIB_NAMES); do \
-		cd ../$$s; make; cd ../$(PROJECT); \
-		ln -sf ../../$$s/$(BINDIR)/lib$$s.a $(BINDIR); \
-		done;
-
 $(BINDIR):
 	mkdir -p $(OBJDIR)
 	mkdir -p $(BINDIR)
 
 clean:
-	#rm $(OBJDIR)/*.o *~ $(TARGET)
 	rm $(OBJDIR)/*.o $(TARGET) $(BINDIR)/$(TARGET) $(BINDIR)/$(STATICLIB)

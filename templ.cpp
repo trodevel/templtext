@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2289 $ $Date:: 2015-08-07 #$ $Author: serge $
+// $Revision: 2459 $ $Date:: 2015-08-29 #$ $Author: serge $
 
 #include "templ.h"                      // self
 #include "renderer.h"                   // Renderer
@@ -106,6 +106,15 @@ void Templ::set_func_proc( FuncProc func_proc )
 std::string Templ::format( const MapKeyValue & tokens, bool throw_on_error ) const
 {
     Renderer r( elems_, tokens, func_proc_, throw_on_error );
+
+    std::string res = r.get();
+
+    return res;
+}
+
+std::string Templ::format( FuncProc func_proc, const MapKeyValue & tokens, bool throw_on_error ) const
+{
+    Renderer r( elems_, tokens, func_proc, throw_on_error );
 
     std::string res = r.get();
 

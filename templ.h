@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2285 $ $Date:: 2015-08-07 #$ $Author: serge $
+// $Revision: 2459 $ $Date:: 2015-08-29 #$ $Author: serge $
 
 #ifndef LIB_TEMPLTEXT_TEMPL_H
 #define LIB_TEMPLTEXT_TEMPL_H
@@ -63,6 +63,7 @@ public:
     void set_func_proc( FuncProc func_proc );
 
     std::string format( const MapKeyValue & tokens = MapKeyValue(), bool throw_on_error = true ) const;
+    std::string format( FuncProc func_proc, const MapKeyValue & tokens = MapKeyValue(), bool throw_on_error = true ) const;
 
 private:
     Templ( const Templ& )               = delete;

@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 3362 $ $Date:: 2016-02-05 #$ $Author: serge $
+// $Revision: 6925 $ $Date:: 2017-05-11 #$ $Author: serge $
 
 #include "parser.h"                     // self
 
@@ -45,13 +45,13 @@ Parser::Parser( const std::string & templ, SetStr & placeholders, Elems & elems 
 const std::string & get_regex_match()
 {
     static const std::string res(
-            "%([A-Z0-9_]+)$|" \
-            "%([A-Z0-9_]+)|" \
-            "%\\{([A-Z0-9_]+)\\}|" \
-            "\\$([A-Za-z][A-Za-z_0-9]+)\\s*\\(" \
-            "\\s*(%[A-Z0-9_]+|[A-Za-z0-9]+|'[^']*')*(\\s*(,)\\s*(%[A-Z0-9_]+|[A-Za-z0-9]+|'[^']*')(\\s*(,)\\s*(%[A-Z0-9_]+|[A-Za-z0-9]+|'[^']*'))*)*\\s*" \
+            "\\$([A-Z0-9_]+)$|" \
+            "\\$([A-Z0-9_]+)|" \
+            "\\$\\{([A-Z0-9_]+)\\}|" \
+            "%([A-Za-z][A-Za-z_0-9]+)\\s*\\(" \
+            "\\s*(\\$[A-Z0-9_]+|[A-Za-z0-9]+|'[^']*')*(\\s*(,)\\s*(\\$[A-Z0-9_]+|[A-Za-z0-9]+|'[^']*')(\\s*(,)\\s*(\\$[A-Z0-9_]+|[A-Za-z0-9]+|'[^']*'))*)*\\s*" \
             "\\)" );
-    //static const std::string res( "%\\{([A-Z0-9]+)\\}|%([A-Z0-9]+)([^A-Z0-9]|$)" );   // TEST: only variables
+    //static const std::string res( "\\$\\{([A-Z0-9]+)\\}|\\$([A-Z0-9]+)([^A-Z0-9]|$)" );   // TEST: only variables
 
     return res;
 }
@@ -197,7 +197,7 @@ Parser::Elem* Parser::convert_func_par_to_elem( const std::string & par )
     if( boost::algorithm::starts_with( par, "'" ) && boost::algorithm::ends_with( par, "'") && par.size() > 1 )
         return new Text( par.substr( 1 , par.size() - 2 ) );
 
-    if( boost::algorithm::starts_with( par, "%" ) && par.size() > 1 )
+    if( boost::algorithm::starts_with( par, "$" ) && par.size() > 1 )
         return create_var( par.substr( 1 , par.size() - 1 ) );
 
     return new Text( par );

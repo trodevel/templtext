@@ -19,11 +19,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 6925 $ $Date:: 2017-05-11 #$ $Author: serge $
+// $Revision: 7954 $ $Date:: 2017-10-02 #$ $Author: serge $
 
 #include "parser.h"                     // self
 
 #include <stdexcept>                    // std::invalid_argument
+#include <iostream>                     // std::cout
 
 #include <boost/regex.hpp>              // boost::regex - for GCC older than 4.9.0
 #include <boost/algorithm/string/predicate.hpp>     // boost::algorithm::ends_with
